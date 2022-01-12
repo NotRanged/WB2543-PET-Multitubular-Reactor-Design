@@ -139,8 +139,6 @@ if __name__ == "__main__": # Script starts here
     ax.set_xlabel("Reactor Tube Length 'L' (m)")
     ax.set_ylabel("Molar concentrations (mol/m^3)")
     ax.legend()
-
-    
     
     plt.subplots_adjust(left=0.2, bottom=0.35) # Make room for the sliders!
 
@@ -181,6 +179,15 @@ if __name__ == "__main__": # Script starts here
     ax_button = plt.axes([0.8, 0.0, 0.15, 0.04])
     recalc_button = Button(ax_button, 'Recalculate', hovercolor='0.975')
 
+    # Create a new plt window for temperature
+    plt.figure()
+    fig2, ax2 = plt.subplots()
+    line_T, = plt.plot(L_data, T_data, 'red')
+    line_T.set_label('Temperature T')
+    ax2.set_xlabel("Reactor Tube Length 'L' (m)")
+    ax2.set_ylabel("Gas Temperature 'T' (K)")
+    ax2.legend()
+
     def recalculate(event):
         # gets called when button gets pressed
         # solve for the slider values and reset the plot to match!
@@ -190,9 +197,13 @@ if __name__ == "__main__": # Script starts here
         line_c_A.set_data(L_data, c_A_data)
         line_c_P.set_data(L_data, c_P_data)
         line_c_S.set_data(L_data, c_S_data)
+        line_T.set_data(L_data, T_data)
         ax.relim()
+        ax2.relim()
         ax.autoscale_view()
+        ax2.autoscale_view()
         fig.canvas.draw_idle()
+        fig2.canvas.draw_idle()
         return
         
     recalc_button.on_clicked(recalculate)
